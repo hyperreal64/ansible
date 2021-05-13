@@ -1,0 +1,29 @@
+---
+- name: Backup ULauncher settings and extensions
+  hosts: local
+  vars:
+    user_home: "{{ ansible_facts['env']['HOME'] }}"
+    backup_path: "{{ user_home }}/onedrive/ulauncher-backups"
+    ulauncher_config: "{{ user_home }}/.config/ulauncher"
+    ulauncher_data: "{{ user_home }}/.local/share/ulauncher"
+    datetime: "{{ ansible_facts['date_time']['iso8601_basic_short'] }}"
+
+  pre_tasks:
+    - name: Ensure backup directory exists
+      file:
+        path: "{{ backup_path }}/{{ datetime }}"
+        state: directory
+        mode: 0755
+
+  tasks:
+    - name: Create gzip archive of ULauncher config
+      archive:
+        path: "{{ ulauncher_config }}"
+        dest: "{{ backup_path }}/{{ datetime }}/ulauncher-config.tar.gz"
+        format: gz
+
+    - name: Create gzip archive of ULauncher data
+      archive:
+        path: "{{ ulauncher_data }}"
+        dest: "{{ backup_path }}/{{ datetime }}/ulauncher-data.tar.gz"
+        format: gz

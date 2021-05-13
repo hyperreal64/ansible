@@ -1,0 +1,57 @@
+---
+- name: Install mosh (mobile shell)
+  hosts: all
+  vars:
+    user_home: "{{ ansible_facts['env']['HOME'] }}"
+    mosh_src: "{{ user_home }}/source/github.com/mobile-shell"
+    mosh_deps_dnf:
+      - perl-diagnostics
+      - protobuf-devel
+      - openssl-devel
+      - libutempter-devel
+      - zlib-devel
+      - ncurses-devel
+    mosh_deps_apt:
+      - libprotobuf-dev
+      - libncurses5-dev
+      - zlib1g-dev
+      - libutempter-dev
+      - libssl-dev
+      - perl
+
+  tasks:
+    - name: Ensure src directory exists in $HOME
+      file:
+        path: "{{ mosh_src }}"
+        state: directory
+        mode: 0700
+
+    - name: Clone github.com/mobile-shell/mosh repo
+      git:
+        repo: https://github.com/mobile-shell/mosh
+        dest: "{{ mosh_src }}/mosh"
+        version: HEAD
+
+    - name: Ensure mosh build dependencies are installed
+      dnf:
+        name: "{{ mosh_deps_dnf }}"
+        state: present
+      when: ansible_facts['os_family'] == "RedHat" 
+      become: true
+
+    - name: Ensure mosh build dependencies are installed
+      apt:
+        name: "{{ mosh_deps_apt }}"
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+
+    - name: MESSAGE
+      debug:
+        msg: 
+        - "You may now run the build commands for mosh in {{ mosh_src }}"
+        - "cd {{ mosh_src }}"
+        - "./autogen.sh"
+        - "./configure"
+        - "make"
+        - "sudo make install"

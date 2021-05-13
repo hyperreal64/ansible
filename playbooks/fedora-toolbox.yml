@@ -1,0 +1,69 @@
+---
+- name: Setup Fedora Toolbox environment
+  hosts: all
+  become: true
+  vars:
+    dnf_packages:
+        - zsh
+        - '@c-development'
+        - '@development-tools'
+        - tmux
+        - xsel
+        - npm
+        - python3-devel
+        - python3-pip
+        - ruby-devel
+        - lsof
+        - neovim
+        - glibc-locale-source
+        - glibc-langpack-en
+        - ShellCheck
+        - jq
+        - wget
+        - curl
+        - httpie
+        - git
+        - git-core
+        - git-extras
+        - parallel
+        - openssl-devel
+        - lsd
+        - bat
+        - ripgrep
+        - fzf
+        - tldr
+        - pipx
+    
+  pre_tasks:
+    - name: Configure DNF plugins (fastestmirror, deltarpm)
+      ansible.builtin.blockinfile:
+        path: /etc/dnf/dnf.conf
+        insertafter: '^skip_if_unavailable=True$'
+        block: |
+            fastestmirror=True
+            deltarpm=True
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+        
+    - name: Update existing packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_only: yes
+    
+  tasks:
+    - name: Install DNF packages
+      ansible.builtin.dnf:
+        name: "{{ dnf_packages }}"
+        state: present
+
+    - name: Set locale def
+      ansible.builtin.lineinfile:
+        path: /etc/locale.conf
+        line: LANG=en_US.UTF-8
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes

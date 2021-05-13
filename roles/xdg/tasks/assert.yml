@@ -1,0 +1,9 @@
+---
+# assert file for xdg
+
+- name: Test if user_home is set correctly
+  ansible.builtin.assert:
+    that:
+      - user_home is defined
+      - user_home is string
+    quiet: yes

@@ -1,0 +1,132 @@
+---
+# assert file for packages
+
+- name: Test if flatpaks is set correctly
+  ansible.builtin.assert:
+    that:
+      - flatpaks is iterable
+    quiet:
+  when:
+    - flatpaks is defined
+
+- name: Test if extra_repositories_redhat is set correctly
+  ansible.builtin.assert:
+    that:
+      - extra_repositories_redhat is iterable
+    quiet: yes
+  when:
+    - extra_repositories_redhat is defined
+
+- name: Test if items in extra_repositories_redhat are set correctly
+  ansible.builtin.assert:
+    that:
+      - item.repo_url is defined
+      - item.gpgkey is defined
+      - item.fingerprint is defined
+      - item.dest is defined
+    quiet: yes
+  loop: "{{ extra_repositories_redhat }}"
+  loop_control:
+    label: "{{ item.repo_url }}"
+  when:
+    - extra_repositories_redhat is defined
+
+- name: Test if extra_repositories_debian is set correctly
+  ansible.builtin.assert:
+    that:
+      - extra_repositories_debian is iterable
+    quiet: yes
+  when:
+    - extra_repositories_debian is defined
+
+- name: Test if items in extra_repositories_debian are set correctly
+  ansible.builtin.assert:
+    that:
+      - item.repo is defined
+      - item.repo is string
+      - item.gpgkey is defined
+      - item.gpgkey is string
+      - item.dest is defined
+      - item.dest is string
+    quiet: yes
+  loop: "{{ extra_repositories_debian }}"
+  loop_control:
+    label: "{{ item.repo }}"
+  when:
+    - extra_repositories_debian is defined
+
+- name: Test if extra_repositories_debian2 is set correctly
+  ansible.builtin.assert:
+    that:
+      - extra_repositories_debian2 is iterable
+    quiet: yes
+  when:
+    - extra_repositories_debian2 is defined
+
+#- name: Test if items in extra_repositories_debian2 are set correctly
+  #ansible.builtin.assert:
+    #that:
+      #- item.gpgkey_id is defined
+      #- item.gpgkey_id is string
+      #- item.keyserver is defined
+      #- item.keyserver is string
+      #- item.repo_url is defined
+      #- item.repo_url is string
+    #quiet: yes
+  #when:
+    #- extra_repositories_debian2 is defined
+
+- name: Test if extra_repositories_ubuntu is set correctly
+  ansible.builtin.assert:
+    that:
+      - extra_repositories_ubuntu is iterable
+    quiet: yes
+  loop: "{{ extra_repositories_ubuntu }}"
+  loop_control:
+    label: "{{ item.repo }}"
+  when:
+    - extra_repositories_ubuntu is defined
+
+- name: Test if items in extra_repositories_ubuntu are set correctly
+  ansible.builtin.assert:
+    that:
+      - item.repo is defined
+      - item.repo is string
+    quiet: yes
+  loop: "{{ extra_repositories_ubuntu }}"
+  loop_control:
+    label: "{{ item.repo }}"
+  when:
+    - extra_repositories_ubuntu is defined
+
+- name: Test if packages is set correctly
+  ansible.builtin.assert:
+    that:
+      - packages is iterable
+    quiet: yes
+  when:
+    - packages is defined
+
+- name: Test if extra_packages is set correctly
+  ansible.builtin.assert:
+    that:
+      - extra_packages is iterable
+    quiet: yes
+  when:
+    - extra_packages is defined
+
+- name: Test if system76_packages is set correctly
+  ansible.builtin.assert:
+    that:
+      - system76_packages is iterable
+    quiet: yes
+  when:
+    - system76_packages is defined
+
+- name: Test is wsl_packages is set correctly
+  ansible.builtin.assert:
+    that:
+      - wsl_packages is iterable
+    quiet: yes
+  when:
+    - wsl_packages is defined

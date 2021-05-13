@@ -1,0 +1,24 @@
+---
+# assert file for systemd
+
+- name: Test if user_home is set correctly
+  ansible.builtin.assert:
+    that:
+      - user_home is defined
+      - user_home is string
+    quiet: yes
+
+- name: Test if host_username is set correctly
+  ansible.builtin.assert:
+    that:
+      - host_username is defined
+      - host_username is string
+    quiet: yes
+
+- name: Test if user_tmp_path is set correctly
+  ansible.builtin.assert:
+    that:
+      - user_tmp_path is defined
+      - user_tmp_path is string
+    quiet: yes
+

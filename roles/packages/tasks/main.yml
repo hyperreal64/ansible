@@ -1,0 +1,90 @@
+---
+# tasks file for packages
+
+- name: Include assert.yml
+  import_tasks: assert.yml
+  run_once: yes
+  
+- name: Setup extra_repositories_ubuntu
+  ansible.builtin.apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+  loop: "{{ extra_repositories_ubuntu }}"
+  when:
+    - extra_repositories_ubuntu is defined
+    - ansible_facts['distribution'] == "Ubuntu"
+  become: true
+
+- name: Setup signing keys - extra_repositories_redhat
+  ansible.builtin.rpm_key:
+    key: "{{ item.gpgkey }}"
+    fingerprint: "{{ item.fingerprint }}"
+    state: present
+  loop: "{{ extra_repositories_redhat }}"
+  when:
+    - extra_repositories_redhat is defined
+    - ansible_facts['os_family'] == "RedHat"
+  become: true
+
+- name: Setup extra_repositories_redhat
+  ansible.builtin.get_url:
+    url: "{{ item.repo_url }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ extra_repositories_redhat }}"
+  when:
+    - extra_repositories_redhat is defined
+    - ansible_facts['os_family'] == "RedHat"
+  become: true
+
+- name: Install essential packages
+  ansible.builtin.package:
+    name: "{{ packages }}"
+    state: present
+  when:
+    - packages is defined
+  become: true
+
+- name: Install extra packages
+  ansible.builtin.package:
+    name: "{{ extra_packages }}"
+    state: present
+  when:
+    - packages is defined
+  become: true
+
+- name: Install System76 packages - RedHat
+  ansible.builtin.package:
+    name: "{{ system76_packages }}"
+    state: present
+  when:
+    - ansible_facts['product_name'] == "Oryx Pro"
+    - system76_packages is defined
+    - ansible_facts['os_family'] == "RedHat"
+  become: true
+
+- name: Install WSL packages
+  ansible.builtin.package:
+    name: "{{ wsl_packages }}"
+  when:
+    - wsl_packages is defined
+    - ansible_facts['kernel'] | regex_search('^.*microsoft-standard-WSL2$')
+  become: true
+
+- name: Add the Flathub repository
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  tags:
+    - flatpak
+
+- name: Install Flatpak packages
+  community.general.flatpak:
+    name: "{{ item }}"
+    state: present
+    method: user
+    remote: flathub
+  loop: "{{ flatpaks }}"
+  tags:
+    - flatpak

@@ -1,0 +1,10 @@
+---
+# assert file for update
+
+- name: Test if update_upgrade_command is set correctly
+  ansible.builtin.assert:
+    that:
+      - update_upgrade_command is defined
+      - update_upgrade_command is string
+      - update_upgrade_command in [ "dist", "full", "yes", "safe" ]
+    quiet: yes

@@ -1,0 +1,10 @@
+---
+- name: System updates
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars:
+    update_reboot: yes
+
+  roles:
+    - role: robertdebock.update

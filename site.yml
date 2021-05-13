@@ -1,0 +1,13 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Setup a Linux system
+  hosts: local
+  
+  # Tag each role so that we can select individual roles to run with 
+  # ansible-playbook --tags
+  roles:
+    - { role: update, tags: ['update', 'system'] }
+    - { role: packages, tags: ['packages', 'system'] }
+    - { role: systemd, tags: ['systemd', 'system'] }
+    - { role: modprobe.d, tags: ['modprobe', 'system'] }
+    - { role: xdg, tags: ['xdg', 'system'] }

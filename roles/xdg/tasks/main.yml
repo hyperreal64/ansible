@@ -1,0 +1,47 @@
+---
+# tasks file for xdg
+
+- name: Copy user-dirs.defaults to /etc/xdg/user-dirs.defaults
+  ansible.builtin.copy:
+    src: user-dirs.defaults
+    dest: /etc/xdg/user-dirs.defaults
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Remove user-dirs.dirs from $XDG_CONFIG_HOME
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config/user-dirs.dirs"
+    state: absent
+
+- name: Remove unused directories in $HOME
+  ansible.builtin.file:
+    path: "{{ user_home }}/{{ item }}"
+    state: absent
+  loop:
+    - Desktop
+    - Downloads
+    - Documents
+    - Music
+    - Pictures
+    - Public
+    - Templates
+    - Videos
+
+- name: Check if xdg-user-dirs is installed
+  ansible.builtin.shell: command -v xdg-user-dirs-update
+  ignore_errors: true
+  register: xdg_command_test
+  args:
+    warn: false
+
+- name: Install xdg-user-dirs
+  when: xdg_command_test.rc != 0
+  ansible.builtin.package:
+    name: xdg-user-dirs
+    state: present
+
+- name: Run xdg-user-dirs-update
+  shell: xdg-user-dirs-update
+  

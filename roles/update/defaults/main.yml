@@ -1,0 +1,8 @@
+---
+# defaults file for update
+
+# For APT (Debian/Ubuntu): remove unused dependency packages
+update_autoremove: yes
+
+# For APT (Debian//Ubuntu): apt_upgrade type which can be: dist, full, yes, or safe
+update_upgrade_command: dist

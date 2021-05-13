@@ -1,0 +1,13 @@
+[local]
+localhost
+
+[local:vars]
+ansible_connection=local
+ansible_python_interpreter=/usr/bin/python3
+
+[remote]
+10.0.0.140
+
+[remote:vars]
+ansible_connection=ssh
+ansible_python_interpreter=/usr/bin/python3

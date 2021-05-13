@@ -1,0 +1,138 @@
+---
+# vars file for packages
+
+_packages:
+  Debian:
+    - zsh
+    - curl
+    - npm
+    - xsel
+    - gpaste
+    - apt-file
+    - apt-transport-https
+    - htop
+    - ssh
+    - tmux
+    - neovim
+    - jq
+    - parallel
+    - gnome-tweak-tool
+    - chrome-gnome-shell
+    - flatpak
+    - timeshift
+    - dconf-editor
+  RedHat:
+    - zsh
+    - tmux
+    - xclip
+    - npm
+    - ngrep
+    - nmap
+    - wireshark
+    - tilix
+    - ShellCheck
+    - '@c-development'
+    - '@development-tools'
+    - poetry
+    - pipx
+    - golang
+    - ruby-devel
+    - httpie
+    - git
+    - git-core
+    - restic
+    - stow
+    - onedrive
+    - '@container-management'
+    - toolbox
+    - git-extras
+    - lsof
+    - fzf
+    - htop
+    - util-linux-user
+    - jq
+    - tldr
+    - parallel
+    - vim-enhanced
+    - gnome-tweak-tool
+    - chrome-gnome-shell
+    - timeshift
+    - ibm-plex-mono-fonts
+    - ibm-plex-sans-fonts
+    - ibm-plex-serif-fonts
+    - google-roboto-fonts
+    - google-roboto-mono-fonts
+    - google-roboto-slab-fonts
+    - dconf-editor
+  Archlinux:
+    - zsh
+    - tmux
+    - xsel
+    - npm
+    - fzf
+    - parallel
+    - neovim
+    - lsd
+    - bat
+    - ripgrep
+    - parallel
+    - jq
+    - tldr
+    - lsof
+    - python-pipx
+    - git
+    - gcc
+    - make
+    - rustup
+    - go
+    - base-devel
+    - python-pip
+    - poetry
+
+_extra_packages:
+  RedHat:
+    - fontconfig-enhanced-defaults
+    - fontconfig-font-replacements
+    - gh
+  Debian:
+    - apt-fast
+    - ulauncher
+
+system76_packages:
+    - system76-dkms
+    - system76-power
+    - system76-driver
+    - system76-firmware
+    - system76-io-dkms
+    - firmware-manager
+
+_wsl_packages:
+  RedHat:
+    - zsh
+    - '@c-development'
+    - '@development-tools'
+    - '@container-management'
+    - tmux
+    - xsel
+    - npm
+    - toolbox
+    - lsof
+    - mosh
+    - fzf
+    - htop
+    - util-linux-user
+    - neovim
+  Debian:
+    - zsh
+    - curl
+    - npm
+    - xsel
+    - apt-file
+    - apt-transport-https
+    - htop
+    - ssh
+    - tmux
+
+packages: "{{ _packages[ansible_os_family] | default(omit) }}"
+extra_packages: "{{ _extra_packages[ansible_os_family] | default(omit) }}"
+wsl_packages: "{{ _wsl_packages[ansible_os_family] | default(omit) }}"

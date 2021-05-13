@@ -1,0 +1,30 @@
+---
+- name: Install and upgrade pip(x) packages
+  hosts: local
+
+  pre_tasks:
+    - name: Ensure pip is up-to-date
+      ansible.builtin.pip:
+        name: pip
+        state: present
+        extra_args: --user
+
+  tasks:
+    - name: Install pipx packages (system scope)
+      ansible.builtin.shell: pipx install "{{ item }}"
+      loop:
+        - ansible-lint
+        - azure-cli
+        - bpytop
+        - concentration
+        - pylint
+
+    - name: Install pip packages (user scope)
+      ansible.builtin.pip:
+        name: "{{ item }}"
+        state: present
+        extra_args: --user
+      loop:
+        - neovim
+        - jedi
+        - python-language-server

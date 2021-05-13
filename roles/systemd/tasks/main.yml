@@ -1,0 +1,14 @@
+---
+# tasks file for systemd
+
+- name: Include assert.yml
+  import_tasks: assert.yml
+  run_once: yes
+
+# See tmpfiles.d(5) for details
+- name: Add home-tmp.conf to /etc/tmpfiles.d
+  ansible.builtin.lineinfile:
+    path: /etc/tmpfiles.d/home-tmp.conf
+    line: "e {{ user_tmp_path }} 0755 {{ host_username }} {{ host_username }} 0 -"
+    create: yes
+  become: true

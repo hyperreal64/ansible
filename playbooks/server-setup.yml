@@ -1,0 +1,13 @@
+---
+- name: Server setup playbook
+  hosts: remote
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: robertdebock.update
+    - role: robertdebock.lynis
+    - role: robertdebock.investigate
+    - role: robertdebock.firewall
+    - role: robertdebock.fail2ban
+    - role: robertdebock.cargo

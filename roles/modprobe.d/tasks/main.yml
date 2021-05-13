@@ -1,0 +1,9 @@
+---
+# tasks file for modprobe.d
+
+- name: Set probe_mask in alsa-base.conf
+  ansible.builtin.lineinfile:
+    path: /etc/modprobe.d/alsa-base.conf
+    line: options snd-hda-intel probe_mask=1
+    create: yes
+  become: true
