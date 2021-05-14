@@ -29,7 +29,6 @@ _packages:
     - ngrep
     - nmap
     - wireshark
-    - tilix
     - ShellCheck
     - '@c-development'
     - '@development-tools'
@@ -54,16 +53,7 @@ _packages:
     - tldr
     - parallel
     - vim-enhanced
-    - gnome-tweak-tool
-    - chrome-gnome-shell
     - timeshift
-    - ibm-plex-mono-fonts
-    - ibm-plex-sans-fonts
-    - ibm-plex-serif-fonts
-    - google-roboto-fonts
-    - google-roboto-mono-fonts
-    - google-roboto-slab-fonts
-    - dconf-editor
   Archlinux:
     - zsh
     - tmux
@@ -94,9 +84,9 @@ _extra_packages:
     - fontconfig-enhanced-defaults
     - fontconfig-font-replacements
     - gh
+    - code
   Debian:
     - apt-fast
-    - ulauncher
 
 system76_packages:
     - system76-dkms

@@ -3,6 +3,7 @@
 host_username: "{{ ansible_facts['env']['USER'] }}"
 user_home: "{{ ansible_facts['env']['HOME'] }}"
 user_tmp_path: "{{ user_home }}/tmp"
+fedora_relver: "{{ ansible_facts['distribution_major_version'] }}"
 
 flatpaks:
     - com.discordapp.Discord

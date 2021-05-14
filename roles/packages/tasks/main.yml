@@ -52,6 +52,52 @@
     - packages is defined
   become: true
 
+- name: Install GNOME applications
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  when:
+    - ansible_facts['os_family'] == "RedHat"
+  tags:
+    - gnome
+  loop:
+    - gnome-tweak-tool
+    - dconf-editor
+    - chrome-gnome-shell
+    - tilix
+ 
+- name: Install KDE Applications
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  when:
+    - ansible_facts['os_family'] == "RedHat"
+  tags:
+    - kde
+  loop:
+    - yakuake
+
+- name: Install RPMFusion Repos
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  when:
+    - ansible_facts['os_family'] == "RedHat"
+  loop:
+    - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_relver }}.noarch.rpm"
+    - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_relver }}.noarch.rpm"
+
+- name: Install RPMFusion packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  when:
+    - ansible_facts['os_family'] == "RedHat"
+  loop:
+    - akmod-nvidia
+    - xorg-x11-drv-nvidia
+    - ffmpeg-libs
+      
 - name: Install System76 packages - RedHat
   ansible.builtin.package:
     name: "{{ system76_packages }}"
