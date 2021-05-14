@@ -65,6 +65,7 @@
     - dconf-editor
     - chrome-gnome-shell
     - tilix
+  become: true
  
 - name: Install KDE Applications
   ansible.builtin.package:
@@ -76,6 +77,7 @@
     - kde
   loop:
     - yakuake
+  become: true
 
 - name: Install RPMFusion Repos
   ansible.builtin.dnf:
@@ -86,6 +88,7 @@
   loop:
     - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_relver }}.noarch.rpm"
     - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_relver }}.noarch.rpm"
+  become: true
 
 - name: Install RPMFusion packages
   ansible.builtin.package:
@@ -97,7 +100,8 @@
     - akmod-nvidia
     - xorg-x11-drv-nvidia
     - ffmpeg-libs
-      
+  become: true      
+
 - name: Install System76 packages - RedHat
   ansible.builtin.package:
     name: "{{ system76_packages }}"
